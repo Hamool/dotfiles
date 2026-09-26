@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+config_home="${XDG_CONFIG_HOME:-$HOME/.config}"
+wofi_root="$config_home/hypr/wofi"
+
+if pgrep -x wofi >/dev/null; then
+  pkill -x wofi
+else
+  exec wofi \
+    --conf "$wofi_root/config/config" \
+    --style "$wofi_root/src/mocha/style.css"
+fi
