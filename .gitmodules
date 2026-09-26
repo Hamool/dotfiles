@@ -1,0 +1,6 @@
+[submodule "hypr/wofi"]
+	path = hypr/wofi
+	url = https://github.com/quantumfate/wofi.git
+[submodule "waybar"]
+	path = waybar
+	url = git@github.com:Hamool/waybar.git
