@@ -2,17 +2,18 @@
 
 ## Project Structure & Module Organization
 
-This repository stores desktop and terminal configuration by application. Hyprland, Hypridle, Hyprlock, and Hyprpaper settings live in `hypr/`; Neovim starts at `nvim/init.lua`, with reusable settings under `nvim/lua/config/` and plugin specifications under `nvim/lua/plugins/`. Tmux, Kitty, Kanshi, Midnight Commander, and mpv files are grouped in their matching top-level directories. Images and theme files belong beside the configuration that consumes them, such as `hypr/wall.jpg` and `kitty/themes/`.
+This repository stores desktop and terminal configuration by application. Hyprland starts at `hypr/hyprland.lua` and loads focused modules for settings, monitors, autostart, input, key bindings, and window rules. Neovim starts at `nvim/init.lua`, with reusable settings under `nvim/lua/config/` and plugin specifications under `nvim/lua/plugins/`. Tmux, Kitty, Kanshi, Midnight Commander, and mpv files are grouped in their matching top-level directories. Login environment files live in `environment.d/` and `zsh/`. Images and theme files belong beside the configuration that consumes them, such as `hypr/wall.jpg` and `kitty/themes/`.
 
-`hypr/wofi`, `waybar`, and entries under `tmux/plugins/` are recorded as external gitlinks. Make changes in their source repositories, then update the pinned commit here; do not copy edits into generated or vendored content.
+`hypr/wofi` and `waybar` are Git submodules. Make changes in their source repositories, then update the pinned commit here. Tmux plugins are managed by TPM and must not be committed under `tmux/plugins/`.
 
 ## Development and Validation Commands
 
-There is no build step or repository-wide test runner. Validate the files you touched before committing:
+`./install.sh` installs Arch packages, builds the latest Neovim, fzf, and Tmux sources into `~/.local`, and links every application configuration. Use its `DOTFILES_SKIP_*` environment switches for focused or offline runs. Validate files before committing:
 
 ```sh
 git diff --check
 git ls-files -z '*.lua' | xargs -0 -n1 luac -p
+Hyprland --verify-config -c "$PWD/hypr/hyprland.lua"
 tmux source-file "$PWD/tmux/tmux.conf"
 hyprctl reload && hyprctl configerrors
 ```
